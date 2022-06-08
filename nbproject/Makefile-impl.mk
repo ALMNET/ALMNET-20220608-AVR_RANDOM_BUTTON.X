@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=20220608-AVR_RANDOM_BUTTON.X
 
 # Active Configuration
-DEFAULTCONF=default
+DEFAULTCONF=Atmega32
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=default 
+ALLCONFS=Atmega32 Atmega328P_Config 
 
 
 # build
@@ -45,13 +45,15 @@ ALLCONFS=default
 
 # clobber
 .clobber-impl: .clobber-pre .depcheck-impl
-	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=default clean
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Atmega32 clean
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Atmega328P_Config clean
 
 
 
 # all
 .all-impl: .all-pre .depcheck-impl
-	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=default build
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Atmega32 build
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Atmega328P_Config build
 
 
 

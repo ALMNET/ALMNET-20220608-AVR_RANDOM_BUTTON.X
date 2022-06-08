@@ -17,7 +17,11 @@
             </sourceRootList>
             <confList>
                 <confElem>
-                    <name>default</name>
+                    <name>Atmega32</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>Atmega328P_Config</name>
                     <type>2</type>
                 </confElem>
             </confList>
