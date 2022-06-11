@@ -1,5 +1,8 @@
 
 
+#include <stdint.h>
+#include <stdbool.h>
+
 #include "LIB_TWI.h"
 #include "LIB_PCF8574.h"
 #include "LIB_LCD.h"

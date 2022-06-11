@@ -28,20 +28,14 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef LIB_LCD_H
-#define	LIB_LCD_H
-
-#include <xc.h> // include processor files - each processor file is guarded.  
+#ifndef LIB_PCF8574_H
+#define	LIB_PCF8574_H
 
 
+int I2C_PCF8574_LCD_Nibble(uint8_t data);
+int I2C_PCF8574_LCD_Byte(uint8_t data, uint8_t flags);
+void I2C_SendData(uint8_t addr, uint8_t *array, uint8_t len, uint8_t flags);
+int8_t LCD_PCF8574_Setup(uint8_t addr);
 
-// Prototype functions
-int8_t LCD_Clear(uint8_t addr);
-int8_t setup_LCD(uint8_t addr);
-int8_t LCD_Position(uint8_t addr, uint8_t posn);
-int8_t LCD_Write(uint8_t addr, char *str, uint8_t len);
-int8_t LCD_ConstWrite(uint8_t addr, const char *str, uint8_t len);
-int8_t LCD_PosnWrite(uint8_t addr, uint8_t posn, const char *str, uint8_t len);
-
-#endif	/* LIB_LCD_H */
+#endif	/* LIB_PCF8574_H */
 

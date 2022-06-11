@@ -1,4 +1,9 @@
+#include <avr/io.h>
+#include <util/delay.h>			// AVR Delay Header (For delay_ms function)
+#include <avr/interrupt.h>
 
+#include <stdint.h>
+#include <stdbool.h>
 
 #include "LIB_TWI.h"
 

@@ -28,16 +28,21 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef LIB_PCF8574_H
-#define	LIB_PCF8574_H
+#ifndef LIB_TWI_H
+#define	LIB_TWI_H
 
-#include <xc.h> // include processor files - each processor file is guarded.  
+#define I2C_READ			1
+#define I2C_WRITE			0
 
 
-int I2C_PCF8574_LCD_Nibble(uint8_t data);
-int I2C_PCF8574_LCD_Byte(uint8_t data, uint8_t flags);
-void I2C_SendData(uint8_t addr, uint8_t *array, uint8_t len, uint8_t flags);
-int8_t LCD_PCF8574_Setup(uint8_t addr);
+// Prototype Functions
+void setup_I2C();
+void I2C_wait();
+int I2C_Start();
+int I2C_SLA(uint8_t addr, uint8_t rw);
+int I2C_Send(uint8_t data);
+void I2C_Stop();
+int I2C_CheckAddress(uint8_t addr);
 
-#endif	/* LIB_PCF8574_H */
+#endif	/* LIB_TWI_H */
 
