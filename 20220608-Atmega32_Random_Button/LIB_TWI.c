@@ -16,13 +16,13 @@ uint8_t I2C_Start(char write_address)						/* I2C start function */
 	while (!(TWCR & (1<<TWINT)));							/* Wait until TWI finish its current job (start condition) */
 	status = TWSR & 0xF8;									/* Read TWI status register with masking lower three bits */
 	if (status != 0x08)										/* Check weather start condition transmitted successfully or not? */
-	return 0;												/* If not then return 0 to indicate start condition fail */
+	return 1;												/* If not then return 0 to indicate start condition fail */
 	TWDR = write_address;									/* If yes then write SLA+W in TWI data register */
 	TWCR = (1<<TWEN)|(1<<TWINT);							/* Enable TWI and clear interrupt flag */
 	while (!(TWCR & (1<<TWINT)));							/* Wait until TWI finish its current job (Write operation) */
 	status = TWSR & 0xF8;									/* Read TWI status register with masking lower three bits */	
 	if (status == 0x18)										/* Check weather SLA+W transmitted & ack received or not? */
-	return 1;												/* If yes then return 1 to indicate ack received i.e. ready to accept data byte */
+	return 0;												/* If yes then return 1 to indicate ack received i.e. ready to accept data byte */
 	if (status == 0x20)										/* Check weather SLA+W transmitted & nack received or not? */
 	return 2;												/* If yes then return 2 to indicate nack received i.e. device is busy */
 	else

@@ -31,6 +31,13 @@
 #ifndef LIB_LCD_H
 #define	LIB_LCD_H
 
+#ifndef F_CPU
+#define F_CPU  16000000UL     // CPU runs at 16 MHz
+#endif
+
+#include <avr/cpufunc.h>
+#include <util/delay.h>
+
 ///////////////////////////////////////////////////////////////////////////////
 /////////////////////////////// LCD COMMANDS  /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,13 +69,17 @@
 #define RW_HIGH	2
 #define EN_HIGH	4
 
+#define RS_LOW	0
+#define RW_LOW	0
+#define EN_LOW	0
 
+typedef unsigned char lcdResult;
 // Prototype functions
 
-static unsigned char LCD_nibble(unsigned char data);
-unsigned char LCD_Cmd(unsigned char lcd_command);
-unsigned char LCD_sendData(unsigned char lcd_data);
-unsigned char LCD_out(char pos_y, char pos_x, char * lcd_msg);
+lcdResult LCD_nibble(uint8_t data, uint8_t flags);
+lcdResult LCD_Cmd(unsigned char lcd_command);
+lcdResult LCD_sendData(unsigned char lcd_data);
+lcdResult LCD_out(char pos_y, char pos_x, char * lcd_msg);
 void LCD_out_CP(char * lcd_msg);
 
 void LCD_Message(char LINE1_MSG[], char LINE2_MSG[]);

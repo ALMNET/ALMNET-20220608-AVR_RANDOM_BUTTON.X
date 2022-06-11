@@ -157,7 +157,7 @@ int main(void)
     
 	///////////////////////// ENABLE GLOBAL INTERRUPTS /////////////////////////
 		
-	I2C_Init();
+	
 	
 	sei();					// Global interrupt enable
 	
@@ -176,10 +176,19 @@ int main(void)
 	
 	DDRB = 0xFF;
 	
-	while(1){
-		PORTB = PFC8574_Read(128);
-	}
+	//while(1){
+		//PORTB = PFC8574_Read(128);
+	//}
 	
+	//LCD_nibble(0xFF);
+	
+	LCD_Init();
+	
+	//LCD_sendData('A');
+	
+	LCD_Message("HOLA", "MOR :)");
+	
+	while(1);
 	
 	
 	

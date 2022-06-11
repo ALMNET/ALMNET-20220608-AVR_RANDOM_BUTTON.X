@@ -11,9 +11,14 @@
 
 uint8_t PFC8574_Write(uint8_t data)
 {
-    I2C_Start(PCF8574_WR_ADR);
-	I2C_Write(data);
-	I2C_Stop();
+    if(!I2C_Start(PCF8574_WR_ADR) && (I2C_Write(data) != 2))
+	{
+		I2C_Stop();
+		return 0;
+	}
+	
+	else
+		return 1;
 }
 
 
