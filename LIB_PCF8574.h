@@ -28,8 +28,8 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef XC_HEADER_TEMPLATE_H
-#define	XC_HEADER_TEMPLATE_H
+#ifndef LIB_PCF8574_H
+#define	LIB_PCF8574_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -39,5 +39,5 @@ int I2C_PCF8574_LCD_Byte(uint8_t data, uint8_t flags);
 void I2C_SendData(uint8_t addr, uint8_t *array, uint8_t len, uint8_t flags);
 int8_t LCD_PCF8574_Setup(uint8_t addr);
 
-#endif	/* XC_HEADER_TEMPLATE_H */
+#endif	/* LIB_PCF8574_H */
 

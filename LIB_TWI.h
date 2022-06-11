@@ -28,8 +28,8 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef XC_HEADER_TEMPLATE_H
-#define	XC_HEADER_TEMPLATE_H
+#ifndef LIB_TWI_H
+#define	LIB_TWI_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -46,5 +46,5 @@ int I2C_Send(uint8_t data);
 void I2C_Stop();
 int I2C_CheckAddress(uint8_t addr);
 
-#endif	/* XC_HEADER_TEMPLATE_H */
+#endif	/* LIB_TWI_H */
 

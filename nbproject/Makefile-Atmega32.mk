@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.c LIB_PCF8574.c LIB_TWI.c
+SOURCEFILES_QUOTED_IF_SPACED=main.c LIB_LCD.c LIB_PCF8574.c LIB_TWI.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/LIB_PCF8574.o ${OBJECTDIR}/LIB_TWI.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/LIB_PCF8574.o.d ${OBJECTDIR}/LIB_TWI.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/LIB_LCD.o ${OBJECTDIR}/LIB_PCF8574.o ${OBJECTDIR}/LIB_TWI.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/LIB_LCD.o.d ${OBJECTDIR}/LIB_PCF8574.o.d ${OBJECTDIR}/LIB_TWI.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/LIB_PCF8574.o ${OBJECTDIR}/LIB_TWI.o
+OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/LIB_LCD.o ${OBJECTDIR}/LIB_PCF8574.o ${OBJECTDIR}/LIB_TWI.o
 
 # Source Files
-SOURCEFILES=main.c LIB_PCF8574.c LIB_TWI.c
+SOURCEFILES=main.c LIB_LCD.c LIB_PCF8574.c LIB_TWI.c
 
 
 
@@ -100,6 +100,12 @@ ${OBJECTDIR}/main.o: main.c  .generated_files/flags/Atmega32/3a2f9ad5fbd9a3167b4
 	@${RM} ${OBJECTDIR}/main.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1 -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -funsigned-char -funsigned-bitfields -Wall -DXPRJ_Atmega32=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3     -MD -MP -MF "${OBJECTDIR}/main.o.d" -MT "${OBJECTDIR}/main.o.d" -MT ${OBJECTDIR}/main.o -o ${OBJECTDIR}/main.o main.c 
 	
+${OBJECTDIR}/LIB_LCD.o: LIB_LCD.c  .generated_files/flags/Atmega32/8e1948c2b5c8b052c6d4261fae10b2ad82840af8 .generated_files/flags/Atmega32/c1e3170f6c2f4ee99286804d8babe1b1bd4428ea
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LIB_LCD.o.d 
+	@${RM} ${OBJECTDIR}/LIB_LCD.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG -D__MPLAB_DEBUGGER_SIMULATOR=1 -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -funsigned-char -funsigned-bitfields -Wall -DXPRJ_Atmega32=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3     -MD -MP -MF "${OBJECTDIR}/LIB_LCD.o.d" -MT "${OBJECTDIR}/LIB_LCD.o.d" -MT ${OBJECTDIR}/LIB_LCD.o -o ${OBJECTDIR}/LIB_LCD.o LIB_LCD.c 
+	
 ${OBJECTDIR}/LIB_PCF8574.o: LIB_PCF8574.c  .generated_files/flags/Atmega32/984f671d5a2b8bd1d2afb48611f05b8c07e1490 .generated_files/flags/Atmega32/c1e3170f6c2f4ee99286804d8babe1b1bd4428ea
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/LIB_PCF8574.o.d 
@@ -118,6 +124,12 @@ ${OBJECTDIR}/main.o: main.c  .generated_files/flags/Atmega32/34bd707f9e05f1f0c28
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -funsigned-char -funsigned-bitfields -Wall -DXPRJ_Atmega32=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3     -MD -MP -MF "${OBJECTDIR}/main.o.d" -MT "${OBJECTDIR}/main.o.d" -MT ${OBJECTDIR}/main.o -o ${OBJECTDIR}/main.o main.c 
+	
+${OBJECTDIR}/LIB_LCD.o: LIB_LCD.c  .generated_files/flags/Atmega32/5b9e305ba8d36bfc6f746c21503294d7d3aee4d .generated_files/flags/Atmega32/c1e3170f6c2f4ee99286804d8babe1b1bd4428ea
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LIB_LCD.o.d 
+	@${RM} ${OBJECTDIR}/LIB_LCD.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -funsigned-char -funsigned-bitfields -Wall -DXPRJ_Atmega32=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3     -MD -MP -MF "${OBJECTDIR}/LIB_LCD.o.d" -MT "${OBJECTDIR}/LIB_LCD.o.d" -MT ${OBJECTDIR}/LIB_LCD.o -o ${OBJECTDIR}/LIB_LCD.o LIB_LCD.c 
 	
 ${OBJECTDIR}/LIB_PCF8574.o: LIB_PCF8574.c  .generated_files/flags/Atmega32/90c2a72679d1a13a7e98df685976c3edd0acdbf3 .generated_files/flags/Atmega32/c1e3170f6c2f4ee99286804d8babe1b1bd4428ea
 	@${MKDIR} "${OBJECTDIR}" 

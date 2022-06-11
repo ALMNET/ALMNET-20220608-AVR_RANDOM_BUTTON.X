@@ -28,20 +28,20 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef XC_HEADER_TEMPLATE_H
-#define	XC_HEADER_TEMPLATE_H
+#ifndef LIB_LCD_H
+#define	LIB_LCD_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
 
 
 // Prototype functions
-int8_t setup_LCD(uint8_t addr);
 int8_t LCD_Clear(uint8_t addr);
+int8_t setup_LCD(uint8_t addr);
 int8_t LCD_Position(uint8_t addr, uint8_t posn);
 int8_t LCD_Write(uint8_t addr, char *str, uint8_t len);
 int8_t LCD_ConstWrite(uint8_t addr, const char *str, uint8_t len);
 int8_t LCD_PosnWrite(uint8_t addr, uint8_t posn, const char *str, uint8_t len);
 
-#endif	/* XC_HEADER_TEMPLATE_H */
+#endif	/* LIB_LCD_H */
 

@@ -14,13 +14,15 @@
 #include "LIB_LCD.h"
 
 
-//FUSES = {
-//	.low = 0xDE, // LOW {SUT_CKSEL=EXTXOSC_8MHZ_XX_258CK_14CK_65MS, CKOUT=CLEAR, CKDIV8=CLEAR}
-//	.high = 0xD9, // HIGH {BOOTRST=CLEAR, BOOTSZ=2048W_3800, EESAVE=CLEAR, WDTON=CLEAR, SPIEN=SET, DWEN=CLEAR, RSTDISBL=CLEAR}
-//	.extended = 0xFF, // EXTENDED {BODLEVEL=DISABLED}
-//};
-//
-//LOCKBITS = 0xFF; // {LB=NO_LOCK, BLB0=NO_LOCK, BLB1=NO_LOCK}
+
+//#include <avr/io.h>
+
+FUSES = {
+	.low = 0xFF, // LOW {SUT_CKSEL=EXTHIFXTALRES_16KCK_64MS, BODEN=CLEAR, BODLEVEL=2V7}
+	.high = 0x99, // HIGH {BOOTRST=CLEAR, BOOTSZ=2048W_3800, EESAVE=CLEAR, CKOPT=CLEAR, SPIEN=SET, JTAGEN=SET, OCDEN=CLEAR}
+};
+
+LOCKBITS = 0xFF; // {LB=NO_LOCK, BLB0=NO_LOCK, BLB1=NO_LOCK}
 
 
 
@@ -108,6 +110,8 @@ char wrgpass_msg[]  = "   WRONG PASS!  ";
 char pass_ok_msg[]  = "  PASSWORD OK!  ";
 char rls_ent_msg[]  = " RELEASE  ENTER ";
 
+uint8_t addr = 0;
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// PROTOTYPES //////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -147,9 +151,36 @@ int main(void)
 //	LCD_Clear(addr);
 //	LCD_Position(addr, 0xC0);
 //	LCD_Write(addr, clear_msg, 16);
+    
+    
+    /////////////////////////// CONFIGURING I2C/TWI ////////////////////////////
 	
+	setup_I2C();
+    
+    
+	///////////////////////// ENABLE GLOBAL INTERRUPTS /////////////////////////
+		
+	sei();					// Global interrupt enable
+    
+    /////////////////////////// I2C ADDRESS CHECKING ///////////////////////////
+    
+    
+//    if (I2C_CheckAddress(0x27)) {
+//        addr = 0x27;
+//    } else if (I2C_CheckAddress(0x3F)) {
+//        addr = 0x3F;
+//    } else if (I2C_CheckAddress(0x20)) {
+//        addr = 0x20;
+//    }
+    
+    addr = 0x3F;
 	
-	
+	setup_LCD(addr);
+    
+    
+	LCD_Clear(addr);
+	LCD_Position(addr, 0xC0);
+	LCD_Write(addr, clear_msg, 16);
 	
 	/////////////////////////////// MAIN PROCESS ///////////////////////////////
 	

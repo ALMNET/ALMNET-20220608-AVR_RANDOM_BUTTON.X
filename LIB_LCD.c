@@ -6,20 +6,6 @@
 
 
 /**
- * Setup the LCD display
- * 
- * @param addr address of the LCD display
- * @return -1 if the display doesn't respond to a selection
- */
-int8_t setup_LCD(uint8_t addr) {
-    if (LCD_PCF8574_Setup(addr) != 0) {
-        return -1;
-    }
-    LCD_Clear(addr);
-    return 0;
-}
-
-/**
  * Clear the LCD display (and return the cursor to the home position
  * 
  * @param addr address of the LCD display
@@ -33,6 +19,20 @@ int8_t LCD_Clear(uint8_t addr) {
     }
     I2C_PCF8574_LCD_Byte(0x01, 0x08);   // clear screen command
     I2C_Stop();
+    return 0;
+}
+
+/**
+ * Setup the LCD display
+ * 
+ * @param addr address of the LCD display
+ * @return -1 if the display doesn't respond to a selection
+ */
+int8_t setup_LCD(uint8_t addr) {
+    if (LCD_PCF8574_Setup(addr) != 0) {
+        return -1;
+    }
+    LCD_Clear(addr);
     return 0;
 }
 
