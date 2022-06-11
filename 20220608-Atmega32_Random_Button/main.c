@@ -1,12 +1,12 @@
 #define F_CPU  16000000UL     // CPU runs at 16 MHz
 
 #include <avr/io.h>
-#include <util/delay.h>			// AVR Delay Header (For delay_ms function)
 #include <avr/interrupt.h>
 
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "Custom_GPIO.H"
 #include "LIB_TWI.h"
@@ -14,17 +14,12 @@
 #include "LIB_LCD.h"
 
 
-
-//#include <avr/io.h>
-
 FUSES = {
 	.low = 0xFF, // LOW {SUT_CKSEL=EXTHIFXTALRES_16KCK_64MS, BODEN=CLEAR, BODLEVEL=2V7}
 	.high = 0x99, // HIGH {BOOTRST=CLEAR, BOOTSZ=2048W_3800, EESAVE=CLEAR, CKOPT=CLEAR, SPIEN=SET, JTAGEN=SET, OCDEN=CLEAR}
 };
 
 LOCKBITS = 0xFF; // {LB=NO_LOCK, BLB0=NO_LOCK, BLB1=NO_LOCK}
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// DEFINES ////////////////////////////////////
@@ -36,60 +31,75 @@ LOCKBITS = 0xFF; // {LB=NO_LOCK, BLB0=NO_LOCK, BLB1=NO_LOCK}
 #define HIGH				1
 #define LOW					0
 
-#define TRUE				1
-#define FALSE				0
 
-#define I2C_READ			1
-#define I2C_WRITE			0
+#define PORT_AS_INPUT		0
+#define PORT_AS_OUTPUT		0xFF
+#define PORT_INPUT_PULLUPS	0xFF
 
-#define TEST_BIT(var, bit)	((var) & (1<<bit))
-#define SET_BIT(var, bit)	((var) |= (1<<bit))
 
-#define HI_BYTE(w)			(((w) >> 8) & 0xFF)		// Extract high-order byte 
-													// from unsigned word
-#define LO_BYTE(w)			((w) & 0xFF)			// Extract low-order byte 
-													// from unsigned word
-
+#define PCF8574A			// Comment this if you are using a non-A version
 
 #define DEBOUNCING_DELAY   10
 
 ////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// INPUTS ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-/*
-#define		NAME_OF_DEFINE	MACRO						// ARDUINO PIN
- */
 
-#define		DELAY_ADJ		ADCH0						// A0
-#define		MOTION_SENS_1	(PINC & (1 << PINC1))		// A1
-#define		MOTION_SENS_2	(PINC & (1 << PINC2))		// A2
+// Modify next 3 lines if you want to change Buttons port
+#define		BUTTON_PORT_DIR		DDRD	// Button Port
+#define		BUTTON_P_IN			PIND	// Buttons Port define for Input asserts
+#define		BUTTON_P_PORT		PORTD	// Buttons Port define for Input asserts
 
-#define		BUTTON_1		(PIND & (1 << PIND7))		// 7
-#define		BUTTON_B		(PIND & (1 << PIND6))		// 6
-#define		BUTTON_C		(PIND & (1 << PIND5))		// 5
-#define		BUTTON_D		(PIND & (1 << PIND4))		// 4
-#define		BUTTON_ENTER	(PIND & (1 << PIND3))		// 3
-#define		BUTTON_CANCEL	(PIND & (1 << PIND2))		// 2
+// Dont modify these lines if you want to keep the pin numeration of the 
+// port previously selected for Buttons
+#define		IN_BUTTON_1		(BUTTON_P_IN & (1 << 0))
+#define		IN_BUTTON_2		(BUTTON_P_IN & (1 << 1))	
+#define		IN_BUTTON_3		(BUTTON_P_IN & (1 << 2))	
+#define		IN_BUTTON_4		(BUTTON_P_IN & (1 << 3))	
+#define		IN_BUTTON_5		(BUTTON_P_IN & (1 << 4))
+#define		IN_BUTTON_6		(BUTTON_P_IN & (1 << 5))
+#define		IN_BUTTON_7		(BUTTON_P_IN & (1 << 6))
+#define		IN_BUTTON_8		(BUTTON_P_IN & (1 << 7))
 
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// OUTPUTS ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-/*
-#define		NAME_OF_DEFINE			MACRO				// ARDUINO PIN
- */
 
-#define		STROBE			OUTPUT_PIN(PORTB, 5)		// 13
-#define		LED_ZONE_1		OUTPUT_PIN(PORTB, 4)		// 12
-#define		LED_ZONE_2		OUTPUT_PIN(PORTB, 3)		// 11
+// Modify the next line if you want to change the LEDS port
+#define		LEDS_PORT		PORTA
 
-#define		SIREN_OUT		OUTPUT_PIN(PORTB, 2)		// 10
-#define		PWM_OUT_AUX		OUTPUT_PIN(PORTB, 1)		// 9
-#define		LED_ARMED		OUTPUT_PIN(PORTB, 0)		// 8
+// Dont modify these lines if you want to keep the pin numeration of the
+// port previously selected for Leds
+#define		LED_1			OUTPUT_PIN(LEDS_PORT, 1)
+#define		LED_2			OUTPUT_PIN(LEDS_PORT, 2)
+#define		LED_3			OUTPUT_PIN(LEDS_PORT, 3)
+#define		LED_4			OUTPUT_PIN(LEDS_PORT, 4)
+#define		LED_5			OUTPUT_PIN(LEDS_PORT, 5)
+#define		LED_6			OUTPUT_PIN(LEDS_PORT, 6)	
+#define		LED_7			OUTPUT_PIN(LEDS_PORT, 7)	
+#define		LED_8			OUTPUT_PIN(LEDS_PORT, 8)	
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// CONSTANTS ///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+// LCD SCREENS
 
+const char clear_msg[]    = "  CLEAR \n STATE  ";
+const char armed_msg[]    = "  ARMED  STATE  ";
+const char ent_pass_msg[] = " ENTER PASSWORD ";
+const char set_pass_msg[] = "  PASSWORD SET! ";
+const char timeout_msg[]  = "     TIMEOUT    ";
+const char wrgpass_msg[]  = "   WRONG PASS!  ";
+const char pass_ok_msg[]  = "  PASSWORD OK!  ";
+const char rls_ent_msg[]  = " RELEASE  ENTER ";
+
+// PCF8574A or non-A Device version Selector
+#ifdef	PCF8574A
+#define PCF8574_ADR	0x003F
+#else
+#define PCF8574_ADR	0x0027
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// VARIABLES ///////////////////////////////////
@@ -97,29 +107,18 @@ LOCKBITS = 0xFF; // {LB=NO_LOCK, BLB0=NO_LOCK, BLB1=NO_LOCK}
 
 unsigned char buffer[16];
 
-unsigned long timerCounter = 0;
+uint32_t timerCounter = 0;
+
+uint8_t wrongPressingTimes = 0;
+
+float sumaricReaction = 0;
+float averageReaction = 0;
 
 
-
-char clear_msg[]    = "  CLEAR  STATE  ";
-char armed_msg[]    = "  ARMED  STATE  ";
-char ent_pass_msg[] = " ENTER PASSWORD ";
-char set_pass_msg[] = "  PASSWORD SET! ";
-char timeout_msg[]  = "     TIMEOUT    ";
-char wrgpass_msg[]  = "   WRONG PASS!  ";
-char pass_ok_msg[]  = "  PASSWORD OK!  ";
-char rls_ent_msg[]  = " RELEASE  ENTER ";
-
-uint8_t addr = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// PROTOTYPES //////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
-// General Setup for Atmega328P and external peripherals
-//void Setup();
-
-
 
 
 
@@ -145,46 +144,63 @@ ISR ( TIMER0_COMP_vect )
 
 int main(void)
 {
-//	Setup();
-//	Siren_PWM_Off();
-//	
-//	LCD_Clear(addr);
-//	LCD_Position(addr, 0xC0);
-//	LCD_Write(addr, clear_msg, 16);
-    
+   
+	// Configures Button Port and internal pullup resistors
+	BUTTON_PORT_DIR	= PORT_AS_INPUT;
+	BUTTON_P_PORT = PORT_INPUT_PULLUPS;		// Port Pullups enabled
+	
+	// Configures Leds port 
+	LEDS_PORT = PORT_AS_OUTPUT;
+	
     
     /////////////////////////// CONFIGURING I2C/TWI ////////////////////////////
 	
-	setup_I2C();
+	setup_I2C();			// Initialize and enable TWI / I2C Interface
     
     
 	///////////////////////// ENABLE GLOBAL INTERRUPTS /////////////////////////
 		
 	sei();					// Global interrupt enable
-    
-    /////////////////////////// I2C ADDRESS CHECKING ///////////////////////////
-    
-    
-//    if (I2C_CheckAddress(0x27)) {
-//        addr = 0x27;
-//    } else if (I2C_CheckAddress(0x3F)) {
-//        addr = 0x3F;
-//    } else if (I2C_CheckAddress(0x20)) {
-//        addr = 0x20;
-//    }
-    
-    addr = 0x3F;
 	
-	setup_LCD(addr);
+	LCD_Init(PCF8574_ADR);
+	
+	
+	//LCD_PosnWrite(uint8_t addr, uint8_t posn, const char *str, uint8_t len)
+	
+	LCD_PosnWrite(PCF8574_ADR, 0, "Hola", 4);
+	
+	//LCD_Message(PCF8574_ADR, "hola", "Culo");
     
-    
-	LCD_Clear(addr);
-	LCD_Position(addr, 0xC0);
-	LCD_Write(addr, clear_msg, 16);
+	//LCD_Clear(PCF8574_ADR);
+	//LCD_Position(PCF8574_ADR, 0xC0);
+	//LCD_Write(PCF8574_ADR, clear_msg, 16);
 	
 	/////////////////////////////// MAIN PROCESS ///////////////////////////////
 	
 	while(1){
+		//printf("\fTesting Results...\n");
+		//
+		//while(1)
+		//{
+			//if (!(PINA&0x01)) // here the button is pressed
+			//{
+				//int counter = 0;
+				//while(!(PINA&0x01)){
+					//counter++;
+				//}
+				//
+				//srand(counter); //
+				//if (!(PINA&0x00)) // and here we release the button and produce the output
+				//{
+					//
+					//PORTB = 0b00000000; // reset port B for each iteration
+					//int randomNumber= rand();
+					//PORTB = randomNumber; // lights up the x'th bit in PORTB. Determined by the random number.
+					//
+					//printf("\nGenerated Number: %d", randomNumber);
+				//}
+			//}
+		//}
         
     }
 	

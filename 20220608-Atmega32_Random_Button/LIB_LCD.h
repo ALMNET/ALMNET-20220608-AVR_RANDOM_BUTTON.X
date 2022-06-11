@@ -32,13 +32,19 @@
 #define	LIB_LCD_H
 
 
+#define RS_HIGH	1
+#define RW_HIGH	2
+#define EN_HIGH	4
+
+
 // Prototype functions
 int8_t LCD_Clear(uint8_t addr);
-int8_t setup_LCD(uint8_t addr);
+int8_t LCD_Init(uint8_t addr);
 int8_t LCD_Position(uint8_t addr, uint8_t posn);
-int8_t LCD_Write(uint8_t addr, char *str, uint8_t len);
+int8_t LCD_Write(const uint8_t addr, const char *str, uint8_t len);
 int8_t LCD_ConstWrite(uint8_t addr, const char *str, uint8_t len);
 int8_t LCD_PosnWrite(uint8_t addr, uint8_t posn, const char *str, uint8_t len);
+int8_t LCD_Message(uint8_t addr, const char * str1, const char * str2);
 
 #endif	/* LIB_LCD_H */
 
