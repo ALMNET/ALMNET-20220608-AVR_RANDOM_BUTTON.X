@@ -77,8 +77,8 @@ typedef unsigned char lcdResult;
 // Prototype functions
 
 lcdResult LCD_nibble(uint8_t data, uint8_t flags);
-lcdResult LCD_Cmd(unsigned char lcd_command);
-lcdResult LCD_sendData(unsigned char lcd_data);
+lcdResult LCD_Cmd(char lcd_command);
+lcdResult LCD_sendData(char lcd_data);
 lcdResult LCD_out(char pos_y, char pos_x, char * lcd_msg);
 void LCD_out_CP(char * lcd_msg);
 

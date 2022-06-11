@@ -54,7 +54,7 @@ lcdResult LCD_nibble(uint8_t data, uint8_t flags){
  *              1 if not
  */
 
-lcdResult LCD_Cmd(unsigned char lcd_command){  
+lcdResult LCD_Cmd(char lcd_command){  
     
     lcdResult result = 1;
 	
@@ -85,7 +85,7 @@ lcdResult LCD_Cmd(unsigned char lcd_command){
 //#define RW_HIGH	2
 //#define EN_HIGH	4
 
-lcdResult LCD_sendData(unsigned char lcd_data){    
+lcdResult LCD_sendData(char lcd_data){    
     
     char result = 1;
     
@@ -126,7 +126,7 @@ lcdResult LCD_sendData(unsigned char lcd_data){
 
 lcdResult LCD_out(char pos_y, char pos_x, char * lcd_msg){
     
-    unsigned char result;
+    lcdResult result;
     unsigned char cursor;
     
     if(*lcd_msg){
@@ -188,10 +188,10 @@ void LCD_Message(char LINE1_MSG[], char LINE2_MSG[]){
     LCD_Cmd(CLEAR_LCD);              // Clear display  
     
     // Prints centered message on 1st line
-    LCD_out(1, 8 - (strlen(LINE1_MSG) / 2), LINE1_MSG);
+    LCD_out(1, 8 - (strlen((char *)LINE1_MSG) / 2), LINE1_MSG);
     
     // Prints centered message on 2nd line
-    LCD_out(2, 8 - (strlen(LINE2_MSG) / 2), LINE2_MSG); 
+    LCD_out(2, 8 - (strlen((char *)LINE2_MSG) / 2), LINE2_MSG); 
     
 }
 

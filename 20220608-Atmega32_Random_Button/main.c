@@ -3,6 +3,9 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+
+#include <util/delay.h>
+
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -81,28 +84,21 @@ LOCKBITS = 0xFF; // {LB=NO_LOCK, BLB0=NO_LOCK, BLB1=NO_LOCK}
 #define		LED_7			OUTPUT_PIN(LEDS_PORT, 7)	
 #define		LED_8			OUTPUT_PIN(LEDS_PORT, 8)	
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////// CONSTANTS ///////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////// SCREENS  ///////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
-// LCD SCREENS
-
-const char clear_msg[]    = "  CLEAR \n STATE  ";
-const char armed_msg[]    = "  ARMED  STATE  ";
-const char ent_pass_msg[] = " ENTER PASSWORD ";
-const char set_pass_msg[] = "  PASSWORD SET! ";
-const char timeout_msg[]  = "     TIMEOUT    ";
-const char wrgpass_msg[]  = "   WRONG PASS!  ";
-const char pass_ok_msg[]  = "  PASSWORD OK!  ";
-const char rls_ent_msg[]  = " RELEASE  ENTER ";
-
-
-
+char  msgWelcome[2][16] = {" WELCOME", "SCREEN"};
+//const unsigned char  msgCrowded[2][16] = {"ROOM", "CROWDED"};
+//const unsigned char  msgDenied [2][16] = {"ACCESS", "DENIED"};
+//const unsigned char  msgGranted[2][16] = {"ACCESS", "GRANTED"};
+	
+	
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// VARIABLES ///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-unsigned char buffer[16];
+char buffer[16];
 
 uint32_t timerCounter = 0;
 
@@ -149,73 +145,58 @@ int main(void)
 	// Configures Leds port 
 	LEDS_PORT = PORT_AS_OUTPUT;
 	
-    
-    /////////////////////////// CONFIGURING I2C/TWI ////////////////////////////
-	
-	//setup_I2C();			// Initialize and enable TWI / I2C Interface
-    
-    
-	///////////////////////// ENABLE GLOBAL INTERRUPTS /////////////////////////
-		
-	
-	
-	sei();					// Global interrupt enable
-	
-	//I2C_Startx(PCF8574_WR_ADR);
-	//I2C_Write(0xFF);
-	//I2C_Stop();
-	//
-	//DDRB = 0xFF;
-	//
-	//while(1){
-		//I2C_Startx(PCF8574_RD_ADR);
-		//PORTB = I2C_Read_Ack();
-		//I2C_Read_Nack();						/* Read flush data with nack */
-		//I2C_Stop();								/* Stop I2C */
-	//}
-	
-	DDRB = 0xFF;
-	
-	//while(1){
-		//PORTB = PFC8574_Read(128);
-	//}
-	
-	//LCD_nibble(0xFF);
-	
 	LCD_Init();
 	
 	//LCD_sendData('A');
 	
-	LCD_Message("HOLA", "MOR :)");
-	
-	while(1);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	LCD_Message(msgWelcome[0], msgWelcome[1]);
 	
 	
 	
 	/////////////////////////////// MAIN PROCESS ///////////////////////////////
 	
 	while(1){
+		
+		uint8_t button;
+		uint32_t cnt = 0;
+		
+		if(button = (BUTTON_P_IN))
+		{
+			while(button == BUTTON_P_IN){
+				cnt++;
+			}
+			
+			LCD_Cmd(CLEAR_LCD);
+			
+			//srand((unsigned int) (0xFF && (cnt + BUTTON_P_IN + button)));
+			
+			srand(cnt);
+			
+			
+			
+			sprintf(buffer, "%d", rand());
+			LCD_out(1, 8 - (strlen((const char *)buffer) / 2), buffer);
+			
+			_delay_ms(200);
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		//printf("\fTesting Results...\n");
 		//
 		//while(1)
