@@ -13,6 +13,8 @@
 #include "LIB_PCF8574.h"
 #include "LIB_LCD.h"
 
+//#include "I2C_Master_H_file.h"
+
 
 FUSES = {
 	.low = 0xFF, // LOW {SUT_CKSEL=EXTHIFXTALRES_16KCK_64MS, BODEN=CLEAR, BODLEVEL=2V7}
@@ -37,7 +39,7 @@ LOCKBITS = 0xFF; // {LB=NO_LOCK, BLB0=NO_LOCK, BLB1=NO_LOCK}
 #define PORT_INPUT_PULLUPS	0xFF
 
 
-#define PCF8574A			// Comment this if you are using a non-A version
+
 
 #define DEBOUNCING_DELAY   10
 
@@ -94,12 +96,7 @@ const char wrgpass_msg[]  = "   WRONG PASS!  ";
 const char pass_ok_msg[]  = "  PASSWORD OK!  ";
 const char rls_ent_msg[]  = " RELEASE  ENTER ";
 
-// PCF8574A or non-A Device version Selector
-#ifdef	PCF8574A
-#define PCF8574_ADR	0x003F
-#else
-#define PCF8574_ADR	0x0027
-#endif
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// VARIABLES ///////////////////////////////////
@@ -155,25 +152,57 @@ int main(void)
     
     /////////////////////////// CONFIGURING I2C/TWI ////////////////////////////
 	
-	setup_I2C();			// Initialize and enable TWI / I2C Interface
+	//setup_I2C();			// Initialize and enable TWI / I2C Interface
     
     
 	///////////////////////// ENABLE GLOBAL INTERRUPTS /////////////////////////
 		
+	I2C_Init();
+	
 	sei();					// Global interrupt enable
 	
-	LCD_Init(PCF8574_ADR);
+	//I2C_Startx(PCF8574_WR_ADR);
+	//I2C_Write(0xFF);
+	//I2C_Stop();
+	//
+	//DDRB = 0xFF;
+	//
+	//while(1){
+		//I2C_Startx(PCF8574_RD_ADR);
+		//PORTB = I2C_Read_Ack();
+		//I2C_Read_Nack();						/* Read flush data with nack */
+		//I2C_Stop();								/* Stop I2C */
+	//}
+	
+	DDRB = 0xFF;
+	
+	while(1){
+		PORTB = PFC8574_Read(128);
+	}
 	
 	
-	//LCD_PosnWrite(uint8_t addr, uint8_t posn, const char *str, uint8_t len)
 	
-	LCD_PosnWrite(PCF8574_ADR, 0, "Hola", 4);
 	
-	//LCD_Message(PCF8574_ADR, "hola", "Culo");
-    
-	//LCD_Clear(PCF8574_ADR);
-	//LCD_Position(PCF8574_ADR, 0xC0);
-	//LCD_Write(PCF8574_ADR, clear_msg, 16);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/////////////////////////////// MAIN PROCESS ///////////////////////////////
 	

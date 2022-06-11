@@ -31,6 +31,32 @@
 #ifndef LIB_LCD_H
 #define	LIB_LCD_H
 
+///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// LCD COMMANDS  /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+#define CLEAR_LCD               0x01
+#define RETURN_HOME             0x02
+#define DECREMENT_CURSOR        0x04
+#define INCREMENT_CURSOR        0x06
+#define SHIFT_RIGHT             0x05
+#define SHIFT_LEFT              0x07
+#define DISPLAY_OFF_CURSOR_OFF  0x08
+#define DISPLAY_OFF_CURSOR_ON   0x0A
+#define DISPLAY_ON_CURSOR_OFF   0x0C
+#define DISPLAY_ON_CURSOR_ON    0x0E
+#define SHIFT_CURSOR_TO_LEFT    0x10
+#define SHIFT_CURSOR_TO_RIGHT   0x14
+#define SHIFT_DISPLAY_LEFT      0x18
+#define SHIFT_DISPLAY_RIGHT     0x1C
+#define HOME_LINE1              0x80
+#define HOME_LINE2              0xC0
+#define LCD_2LINES_5X7          0x38
+#define LCD_2LINES_5X8          0x28
+
+///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////// LCD CONTROL  /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 #define RS_HIGH	1
 #define RW_HIGH	2
@@ -38,13 +64,16 @@
 
 
 // Prototype functions
-int8_t LCD_Clear(uint8_t addr);
-int8_t LCD_Init(uint8_t addr);
-int8_t LCD_Position(uint8_t addr, uint8_t posn);
-int8_t LCD_Write(const uint8_t addr, const char *str, uint8_t len);
-int8_t LCD_ConstWrite(uint8_t addr, const char *str, uint8_t len);
-int8_t LCD_PosnWrite(uint8_t addr, uint8_t posn, const char *str, uint8_t len);
-int8_t LCD_Message(uint8_t addr, const char * str1, const char * str2);
+
+static unsigned char LCD_nibble(unsigned char data);
+unsigned char LCD_Cmd(unsigned char lcd_command);
+unsigned char LCD_sendData(unsigned char lcd_data);
+unsigned char LCD_out(char pos_y, char pos_x, char * lcd_msg);
+void LCD_out_CP(char * lcd_msg);
+
+void LCD_Message(char LINE1_MSG[], char LINE2_MSG[]);
+void LCD_Init();
+
 
 #endif	/* LIB_LCD_H */
 

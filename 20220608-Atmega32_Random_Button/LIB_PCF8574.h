@@ -31,11 +31,21 @@
 #ifndef LIB_PCF8574_H
 #define	LIB_PCF8574_H
 
+#define PCF8574A			// Comment this if you are using a non-A version
 
-int I2C_PCF8574_LCD_Nibble(uint8_t data);
-int I2C_PCF8574_LCD_Byte(uint8_t data, uint8_t flags);
-void I2C_SendData(uint8_t addr, uint8_t *array, uint8_t len, uint8_t flags);
-int8_t LCD_PCF8574_Setup(uint8_t addr);
+// PCF8574A or non-A Device version Selector
+#ifdef	PCF8574A
+#define PCF8574_GEN_ADR	0x003F
+#define PCF8574_WR_ADR	0x007E
+#define PCF8574_RD_ADR	0x007F
+#else
+#define PCF8574_GEN_ADR	0x0027
+#define PCF8574_WR_ADR	0x004E
+#define PCF8574_RD_ADR	0x004F
+#endif
+
+uint8_t PFC8574_Write(uint8_t data);
+uint8_t PFC8574_Read(uint8_t dataBitmask);
 
 #endif	/* LIB_PCF8574_H */
 
